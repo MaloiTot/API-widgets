@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+
+    <title>Bootcamp APIs</title>
+   
+    <script src="//unpkg.com/alpinejs" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"
+        integrity="sha512-odNmoc1XJy5x1TMVMdC7EMs3IVdItLPlCeL5vSUPN2llYKMJ2eByTTAIiiuqLg+GdNr9hF6z81p27DArRFKT7A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+
+<body>
+    <h1>My API widgets</h1>
+    <div class="widgets">
+       
+    <div class="Widget" x-data="{
+        sentence : '',
+        longestWord : '',
+        shortestWord : '',
+        wordLength : 0,
+        checkSentence() {
+            axios
+                .get(`/api/word_game?sentence=${this.sentence}`)
+                .then((result) =>{
+                    // console.log(result.data)
+                    this.longestWord = result.data.longestWord;
+                    this.shortestWord = result.data.shortestWord;
+                    this.wordLength = result.data.sum;
+                });
+        }
+    }">
+    
+    
+        <div >
+            <h2> Word Game</h2>
+            <textarea x-model="sentence" name="" id="" cols="30" rows="10"></textarea>
+            <div>
+                <button x-on:click="checkSentence">Check sentence</button>
+            </div>
+        </div>
+        <div>
+            <div>
+                Longest word: <span x-text="longestWord"></span>
+            </div>
+            <div>
+                Shortest word: <span x-text="shortestWord"></span>
+            </div>
+            <div>
+                Word count: <span x-text="wordLength"></span>
+            </div>
+        </div>
+    </div>
+
+        <div class="Widget">
+
+            <div class="phoneBill">
+
+                <div x-data="{
+            
+            string:'',
+            
+            total:'',
+            
+            change(){
+            
+            axios.post('/api/total/phonebill', 
+            {billString: this.string}).then(results=>{
+            
+            console.log(results.data)
+            
+            this.total = results.data.total
+             })
+            
+         }
+            
+            
+             }">
+
+                    <h2>Total Phone Bill Widget</h2>
+
+                    <div class="input">
+
+                        <label for="shift">Phone Usage: </label>
+
+                        <input type="text" x-model="string" id="shift"> <button @click="change">charge</button>
+
+                        <div class="showAmount">
+
+                            <span x-text="total"></span>
+
+
+                            <!-- phone bill HERE    -->
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    
+        <div class="Widget">
+
+            <div class="fromTown">
+
+                <div x-data="{
+            
+                    usageQuery: '',
+                    airtimeAvail:'0.00',
+                    airtimeMessage: 'this is about airtime',
+        
+                    calculate(){
+                        axios
+                        .post('/api/enoughAirtime', 
+                        
+                        {usage: this.usageQuery, airtime: this.airtimeAvail}).then (results=>{ 
+
+                        this.airtimeMessage = enoughAirtime(this.usage, this.airtime);
+                        
+        
+                             
+                      }
+            
+           
+            
+            
+             }">
+
+                    <h2>Enough Airtime</h2>
+
+                    <div class="widget" x-data=" airtimeWidget" >
+                        <h1>Enough airtime</h1>
+                        <div>
+                        <label for="usage">Please enter your airtime usage</label>
+                        <input type="text" id="usage" x-model="usage" placeholder="">
+                        </div>
+                        <div>
+                        <label for="amountRecharge">Recharge amount</label>
+                        <input type="number" id="airtime" x-model="airtime" placeholder="amount in Rands">
+                        </div>
+                        <button x-on:click="calculate" x-show="usage.length>0 && airtime>0">Calculate</button>
+                        <div class="message" x-text="airtimeMessage">
+                         
+                        </div> 
+                      </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>
