@@ -45,22 +45,16 @@ app.post('/api/total/phonebill',  (request, response) => {
         
         })
 
-        app.post('/api/enoughAirtime',  (request, response) => {
+        app.post('/api/enough',  (request, response) => {
 
-                const { usage } = request.body;
-                
-                console.log(usage);
-                const { airtime} = request.body;
+                const usage = request.body.usage;
+                const airtime = request.body.airtime;
                 
                 console.log(airtime);
-                
-                const bill = enoughAirtime(usage, airtime)
-                
-                console.log(bill);
-                
+          
                 response.json({
                 
-                 airtimeMessage: bill
+                        remaining : enoughAirtime(usage, airtime)
                  })
                 
                 
